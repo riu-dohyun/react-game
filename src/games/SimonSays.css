@@ -1,0 +1,326 @@
+.game-stats {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 1rem;
+  border-radius: 12px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  min-width: 80px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #bdc3c7;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #3498db;
+  text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+}
+
+.simon-status {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.status-message {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.status-message.showing {
+  color: #f39c12;
+  border-color: rgba(243, 156, 18, 0.5);
+  animation: pulse 1s infinite;
+}
+
+.status-message.waiting {
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, 0.5);
+}
+
+.status-message.game-over {
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, 0.5);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.simon-board {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 15px;
+  max-width: 400px;
+  width: 90vw;
+  height: 90vw;
+  max-height: 400px;
+  margin: 0 auto 2rem;
+  background: rgba(44, 62, 80, 0.95);
+  padding: 20px;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  border: 3px solid rgba(52, 152, 219, 0.3);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.simon-button {
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.simon-button:hover:not(.disabled) {
+  transform: scale(1.05);
+}
+
+.simon-button:active:not(.disabled) {
+  transform: scale(0.95);
+}
+
+.simon-button.disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.simon-button.red {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.simon-button.red.active {
+  background: linear-gradient(135deg, #ff6b6b, #e74c3c);
+  box-shadow: 
+    0 0 30px rgba(231, 76, 60, 0.8),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+}
+
+.simon-button.blue {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.simon-button.blue.active {
+  background: linear-gradient(135deg, #5dade2, #3498db);
+  box-shadow: 
+    0 0 30px rgba(52, 152, 219, 0.8),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+}
+
+.simon-button.green {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.simon-button.green.active {
+  background: linear-gradient(135deg, #58d68d, #2ecc71);
+  box-shadow: 
+    0 0 30px rgba(46, 204, 113, 0.8),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+}
+
+.simon-button.yellow {
+  background: linear-gradient(135deg, #f1c40f, #f39c12);
+}
+
+.simon-button.yellow.active {
+  background: linear-gradient(135deg, #f7dc6f, #f1c40f);
+  box-shadow: 
+    0 0 30px rgba(241, 196, 15, 0.8),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+}
+
+.color-name {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.game-end-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.game-end-message {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 3rem;
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.lose-message {
+  color: #e74c3c;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+  line-height: 1.6;
+}
+
+.end-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.continue-button,
+.menu-button {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.continue-button {
+  background: linear-gradient(45deg, #2ecc71, #27ae60);
+  color: white;
+}
+
+.menu-button {
+  background: linear-gradient(45deg, #f39c12, #e67e22);
+  color: white;
+}
+
+.continue-button:hover,
+.menu-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .game-stats {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .stat-item {
+    padding: 0.8rem;
+    min-width: 70px;
+  }
+  
+  .stat-value {
+    font-size: 1.1rem;
+  }
+  
+  .simon-board {
+    max-width: 320px;
+    max-height: 320px;
+    gap: 10px;
+    padding: 15px;
+  }
+  
+  .simon-button {
+    font-size: 1rem;
+  }
+  
+  .color-name {
+    font-size: 0.9rem;
+  }
+  
+  .status-message {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .end-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .continue-button,
+  .menu-button {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .game-end-message {
+    padding: 2rem;
+    margin: 1rem;
+  }
+  
+  .lose-message {
+    font-size: 1.1rem;
+  }
+}
+
+.game-description {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.game-description p {
+  color: #ecf0f1;
+  margin: 0.8rem 0;
+  line-height: 1.6;
+}
+
+.game-description p:first-child {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #3498db;
+  font-weight: bold;
+}

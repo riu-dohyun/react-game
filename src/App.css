@@ -159,6 +159,27 @@
   background: linear-gradient(135deg, #f39c12, #d35400);
 }
 
+.game-buttons button:nth-child(9) {
+  background: linear-gradient(135deg, #fd79a8, #e84393);
+}
+.game-buttons button:nth-child(9):hover {
+  background: linear-gradient(135deg, #fd6c98, #d63384);
+}
+
+.game-buttons button:nth-child(10) {
+  background: linear-gradient(135deg, #636e72, #2d3436);
+}
+.game-buttons button:nth-child(10):hover {
+  background: linear-gradient(135deg, #74b9ff, #0984e3);
+}
+
+.game-buttons button:nth-child(11) {
+  background: linear-gradient(135deg, #00b894, #00a085);
+}
+.game-buttons button:nth-child(11):hover {
+  background: linear-gradient(135deg, #55efc4, #00b894);
+}
+
 .back-button {
   position: absolute;
   top: -60px;

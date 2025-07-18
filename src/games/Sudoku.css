@@ -1,0 +1,515 @@
+.game-stats {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 1rem;
+  border-radius: 12px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  min-width: 80px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #bdc3c7;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #3498db;
+  text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+}
+
+.stat-value.error {
+  color: #e74c3c;
+  text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+}
+
+.stat-value.timer {
+  color: #f39c12;
+  text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.difficulty-selection {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-selection h3 {
+  color: #ecf0f1;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.difficulty-button {
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #34495e, #2c3e50);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  border-radius: 12px;
+  color: #ecf0f1;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  min-width: 100px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.difficulty-button:hover {
+  background: linear-gradient(135deg, #4a6fa5, #357abd);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-color: #3498db;
+}
+
+.difficulty-button.active {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border-color: #3498db;
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.6);
+}
+
+.difficulty-button small {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 0.3rem;
+}
+
+.sudoku-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  background: linear-gradient(135deg, #8B4513, #A0522D);
+  border: 6px solid #654321;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 0 auto 2rem;
+  width: min(85vw, 480px);
+  height: min(85vw, 480px);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.sudoku-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1px;
+  background: linear-gradient(135deg, #D2691E, #CD853F);
+  border-radius: 4px;
+  padding: 2px;
+  border: 2px solid #8B4513;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+
+.sudoku-cell {
+  background: linear-gradient(135deg, #F5DEB3, #DEB887);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+  position: relative;
+  z-index: 3;
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  color: #654321;
+}
+
+.sudoku-cell:hover:not(.initial) {
+  background: linear-gradient(135deg, #F0E68C, #DAA520);
+  transform: scale(1.05);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* 선택된 셀 */
+.sudoku-cell.selected {
+  background: linear-gradient(135deg, #DAA520, #B8860B);
+  color: white;
+  box-shadow: 
+    0 0 15px rgba(218, 165, 32, 0.8),
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  border-color: #B8860B;
+  z-index: 10;
+}
+
+/* 같은 행 하이라이트 */
+.sudoku-cell.highlighted-row {
+  background: linear-gradient(135deg, #F4E4BC, #E6D3A3);
+  border-color: #DAA520;
+}
+
+/* 같은 열 하이라이트 */
+.sudoku-cell.highlighted-col {
+  background: linear-gradient(135deg, #F4E4BC, #E6D3A3);
+  border-color: #DAA520;
+}
+
+/* 같은 3x3 박스 하이라이트 */
+.sudoku-cell.highlighted-box {
+  background: linear-gradient(135deg, #FFF8DC, #F5E6B8);
+  border-color: rgba(218, 165, 32, 0.5);
+}
+
+/* 같은 숫자 하이라이트 */
+.sudoku-cell.same-number {
+  background: linear-gradient(135deg, #FF8C00, #FF7F50);
+  color: white;
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.6);
+  border-color: #FF7F50;
+}
+
+/* 초기 숫자 (퍼즐에서 주어진 숫자) */
+.sudoku-cell.initial {
+  background: linear-gradient(135deg, #8B4513, #654321);
+  color: #F5DEB3;
+  font-weight: 900;
+  cursor: default;
+  border-color: #654321;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.sudoku-cell.initial:hover {
+  background: linear-gradient(135deg, #8B4513, #654321);
+  transform: none;
+}
+
+.sudoku-cell.initial.highlighted-row,
+.sudoku-cell.initial.highlighted-col,
+.sudoku-cell.initial.highlighted-box {
+  background: linear-gradient(135deg, #A0522D, #8B4513);
+}
+
+.sudoku-cell.initial.same-number {
+  background: linear-gradient(135deg, #CD853F, #D2691E);
+  box-shadow: 0 0 10px rgba(205, 133, 63, 0.6);
+}
+
+
+.number-pad {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.number-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  max-width: 500px;
+  width: 100%;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #8B4513, #A0522D);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  border: 3px solid #654321;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.number-button {
+  width: 70px;
+  height: 70px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #D2691E, #CD853F);
+  border: 2px solid #8B4513;
+  border-radius: 12px;
+  color: #654321;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.number-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.number-button:hover::before {
+  left: 100%;
+}
+
+.number-button:hover {
+  background: linear-gradient(135deg, #DAA520, #B8860B);
+  color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border-color: #654321;
+}
+
+.number-button:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.number-button.erase {
+  background: linear-gradient(135deg, #A0522D, #8B4513);
+  color: #F5DEB3;
+  font-size: 1.2rem;
+  grid-column: span 2;
+  width: 100%;
+}
+
+.number-button.erase:hover {
+  background: linear-gradient(135deg, #8B4513, #654321);
+  color: white;
+}
+
+.game-end-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.game-end-message {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 3rem;
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.win-message {
+  color: #2ecc71;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+  line-height: 1.6;
+}
+
+.end-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.continue-button,
+.menu-button {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.continue-button {
+  background: linear-gradient(45deg, #2ecc71, #27ae60);
+  color: white;
+}
+
+.menu-button {
+  background: linear-gradient(45deg, #f39c12, #e67e22);
+  color: white;
+}
+
+.continue-button:hover,
+.menu-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .game-stats {
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .stat-item {
+    padding: 0.8rem;
+    min-width: 70px;
+  }
+  
+  .stat-value {
+    font-size: 1.1rem;
+  }
+  
+  .difficulty-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .difficulty-button {
+    width: 100%;
+    max-width: 220px;
+  }
+  
+  .difficulty-selection {
+    padding: 1.5rem;
+  }
+  
+  .sudoku-board {
+    width: 95vw;
+    height: 95vw;
+    max-width: 350px;
+    max-height: 350px;
+    padding: 8px;
+    gap: 3px;
+  }
+  
+  .sudoku-box {
+    padding: 2px;
+    gap: 1px;
+  }
+  
+  .sudoku-cell {
+    font-size: 1.3rem;
+    border-radius: 4px;
+  }
+  
+  .number-buttons {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    padding: 1rem;
+    max-width: 320px;
+  }
+  
+  .number-button {
+    width: 60px;
+    height: 60px;
+    font-size: 1.4rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .number-button.erase {
+    grid-column: span 3;
+    font-size: 1rem;
+  }
+  
+  .end-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .continue-button,
+  .menu-button {
+    width: 100%;
+    max-width: 220px;
+  }
+  
+  .game-end-message {
+    padding: 2rem;
+    margin: 1rem;
+  }
+  
+  .win-message {
+    font-size: 1.1rem;
+  }
+
+  .number-pad {
+    margin-bottom: 1rem;
+  }
+}
+
+.game-description {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.game-description p {
+  color: #ecf0f1;
+  margin: 0.8rem 0;
+  line-height: 1.6;
+}
+
+.game-description p:first-child {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #3498db;
+  font-weight: bold;
+}

@@ -47,6 +47,62 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mode-selection {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mode-selection h3 {
+  color: white;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mode-button {
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  min-width: 80px;
+}
+
+.mode-button:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.mode-button.active {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  border-color: #4caf50;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+}
+
+.mode-button small {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 0.3rem;
 }
 
 .game-description p {
@@ -249,17 +305,23 @@
     display: none;
   }
   
-  .game-board-2048 {
-    width: 280px;
-    height: 280px;
-  }
-  
-  .tile {
-    font-size: 1.5rem;
-  }
-  
   .score-container {
     flex-direction: column;
     align-items: center;
+  }
+  
+  .mode-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .mode-button {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .game-description,
+  .mode-selection {
+    padding: 1.5rem;
   }
 }

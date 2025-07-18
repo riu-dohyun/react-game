@@ -1,0 +1,375 @@
+.game-stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 1rem;
+  border-radius: 12px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  min-width: 100px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #bdc3c7;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #3498db;
+  text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+}
+
+.stat-value.won {
+  color: #2ecc71;
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.stat-value.lost {
+  color: #e74c3c;
+  text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+}
+
+.difficulty-selection {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-selection h3 {
+  color: #ecf0f1;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.difficulty-button {
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #34495e, #2c3e50);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  border-radius: 12px;
+  color: #ecf0f1;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  min-width: 120px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.difficulty-button:hover {
+  background: linear-gradient(135deg, #4a6fa5, #357abd);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-color: #3498db;
+}
+
+.difficulty-button.active {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border-color: #3498db;
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.6);
+}
+
+.difficulty-button small {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 0.3rem;
+}
+
+.minesweeper-board {
+  display: grid;
+  gap: 1px;
+  background: #2c3e50;
+  border: 3px solid #34495e;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 0 auto 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  justify-content: center;
+}
+
+.minesweeper-board.easy {
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  width: min(90vw, 360px);
+  height: min(90vw, 360px);
+}
+
+.minesweeper-board.medium {
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(16, 1fr);
+  width: min(90vw, 480px);
+  height: min(90vw, 480px);
+}
+
+.minesweeper-board.hard {
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(16, 1fr);
+  width: min(95vw, 750px);
+  height: min(50vw, 400px);
+}
+
+.mine-cell {
+  background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  min-height: 25px;
+  user-select: none;
+}
+
+.mine-cell:hover:not(.revealed) {
+  background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+  transform: scale(1.05);
+}
+
+.mine-cell.revealed {
+  background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: default;
+}
+
+.mine-cell.mine {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  animation: explode 0.3s ease;
+}
+
+@keyframes explode {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.mine-cell.flagged {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  box-shadow: 
+    0 0 10px rgba(243, 156, 18, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 숫자별 색상 */
+.mine-cell.number-1 { color: #3498db; }
+.mine-cell.number-2 { color: #2ecc71; }
+.mine-cell.number-3 { color: #e74c3c; }
+.mine-cell.number-4 { color: #9b59b6; }
+.mine-cell.number-5 { color: #f39c12; }
+.mine-cell.number-6 { color: #1abc9c; }
+.mine-cell.number-7 { color: #34495e; }
+.mine-cell.number-8 { color: #e67e22; }
+
+.game-end-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.game-end-message {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 3rem;
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.win-message {
+  color: #2ecc71;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+  line-height: 1.6;
+}
+
+.lose-message {
+  color: #e74c3c;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+  line-height: 1.6;
+}
+
+.end-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.continue-button,
+.menu-button {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.continue-button {
+  background: linear-gradient(45deg, #2ecc71, #27ae60);
+  color: white;
+}
+
+.menu-button {
+  background: linear-gradient(45deg, #f39c12, #e67e22);
+  color: white;
+}
+
+.continue-button:hover,
+.menu-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .game-stats {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .stat-item {
+    padding: 0.8rem;
+    min-width: 80px;
+  }
+  
+  .stat-value {
+    font-size: 1.2rem;
+  }
+  
+  .difficulty-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .difficulty-button {
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .difficulty-selection {
+    padding: 1.5rem;
+  }
+  
+  .minesweeper-board.easy {
+    width: 95vw;
+    height: 95vw;
+    max-width: 320px;
+    max-height: 320px;
+  }
+  
+  .minesweeper-board.medium {
+    width: 95vw;
+    height: 95vw;
+    max-width: 400px;
+    max-height: 400px;
+  }
+  
+  .minesweeper-board.hard {
+    width: 98vw;
+    height: 60vw;
+    max-width: 600px;
+    max-height: 320px;
+  }
+  
+  .mine-cell {
+    font-size: 0.8rem;
+    min-height: 20px;
+  }
+  
+  .end-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .continue-button,
+  .menu-button {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .game-end-message {
+    padding: 2rem;
+    margin: 1rem;
+  }
+  
+  .win-message,
+  .lose-message {
+    font-size: 1.1rem;
+  }
+}
+
+.game-description {
+  background: rgba(44, 62, 80, 0.95);
+  padding: 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  text-align: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.game-description p {
+  color: #ecf0f1;
+  margin: 0.8rem 0;
+  line-height: 1.6;
+}
+
+.game-description p:first-child {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #3498db;
+  font-weight: bold;
+}

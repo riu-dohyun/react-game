@@ -7,13 +7,25 @@ interface TwoFortyEightProps {
 
 type Board = number[][]
 type Direction = 'up' | 'down' | 'left' | 'right'
+type BoardSize = 4 | 5 | 6
+type GameMode = '4x4' | '5x5' | '6x6'
 
-const BOARD_SIZE = 4
-const WINNING_TILE = 2048
+interface GameConfig {
+  boardSize: BoardSize
+  winningTile: number
+  name: string
+}
+
+const GAME_CONFIGS: Record<GameMode, GameConfig> = {
+  '4x4': { boardSize: 4, winningTile: 2048, name: '2048' },
+  '5x5': { boardSize: 5, winningTile: 4096, name: '4096' },
+  '6x6': { boardSize: 6, winningTile: 8192, name: '8192' }
+}
 
 function TwoFortyEight({ onBack }: TwoFortyEightProps) {
+  const [gameMode, setGameMode] = useState<GameMode>('4x4')
   const [board, setBoard] = useState<Board>(() => 
-    Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(0))
+    Array(GAME_CONFIGS[gameMode].boardSize).fill(null).map(() => Array(GAME_CONFIGS[gameMode].boardSize).fill(0))
   )
   const [score, setScore] = useState<number>(0)
   const [bestScore, setBestScore] = useState<number>(() => {
@@ -24,13 +36,14 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
   const [gameWon, setGameWon] = useState<boolean>(false)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
-  const createEmptyBoard = (): Board => 
-    Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(0))
+  const createEmptyBoard = (size: BoardSize): Board => 
+    Array(size).fill(null).map(() => Array(size).fill(0))
 
   const getEmptyCells = (board: Board): Array<[number, number]> => {
     const emptyCells: Array<[number, number]> = []
-    for (let row = 0; row < BOARD_SIZE; row++) {
-      for (let col = 0; col < BOARD_SIZE; col++) {
+    const boardSize = board.length
+    for (let row = 0; row < boardSize; row++) {
+      for (let col = 0; col < boardSize; col++) {
         if (board[row][col] === 0) {
           emptyCells.push([row, col])
         }
@@ -51,15 +64,15 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
     return newBoard
   }
 
-  const initializeGame = () => {
-    let newBoard = createEmptyBoard()
-    newBoard = addRandomTile(newBoard)
-    newBoard = addRandomTile(newBoard)
-    return newBoard
-  }
 
-  const startGame = () => {
-    const newBoard = initializeGame()
+  const startGame = (selectedMode?: GameMode) => {
+    if (selectedMode) {
+      setGameMode(selectedMode)
+    }
+    const config = GAME_CONFIGS[selectedMode || gameMode]
+    let newBoard = createEmptyBoard(config.boardSize)
+    newBoard = addRandomTile(newBoard)
+    newBoard = addRandomTile(newBoard)
     setBoard(newBoard)
     setScore(0)
     setGameOver(false)
@@ -74,13 +87,14 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
   }
 
   const slideArray = (arr: number[]): { array: number[], points: number } => {
+    const boardSize = arr.length
     const filtered = arr.filter(val => val !== 0)
-    const missing = BOARD_SIZE - filtered.length
+    const missing = boardSize - filtered.length
     const zeros = Array(missing).fill(0)
     const newArray = filtered.concat(zeros)
     let points = 0
 
-    for (let i = 0; i < BOARD_SIZE - 1; i++) {
+    for (let i = 0; i < boardSize - 1; i++) {
       if (newArray[i] !== 0 && newArray[i] === newArray[i + 1]) {
         newArray[i] *= 2
         newArray[i + 1] = 0
@@ -89,7 +103,7 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
     }
 
     const finalFiltered = newArray.filter(val => val !== 0)
-    const finalMissing = BOARD_SIZE - finalFiltered.length
+    const finalMissing = boardSize - finalFiltered.length
     const finalZeros = Array(finalMissing).fill(0)
     
     return {
@@ -150,18 +164,19 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
     // 빈 셀이 있으면 게임이 끝나지 않음
     if (getEmptyCells(board).length > 0) return false
 
+    const boardSize = board.length
     // 인접한 셀과 합칠 수 있는지 확인
-    for (let row = 0; row < BOARD_SIZE; row++) {
-      for (let col = 0; col < BOARD_SIZE; col++) {
+    for (let row = 0; row < boardSize; row++) {
+      for (let col = 0; col < boardSize; col++) {
         const currentValue = board[row][col]
         
         // 오른쪽 셀 확인
-        if (col < BOARD_SIZE - 1 && board[row][col + 1] === currentValue) {
+        if (col < boardSize - 1 && board[row][col + 1] === currentValue) {
           return false
         }
         
         // 아래쪽 셀 확인
-        if (row < BOARD_SIZE - 1 && board[row + 1][col] === currentValue) {
+        if (row < boardSize - 1 && board[row + 1][col] === currentValue) {
           return false
         }
       }
@@ -171,7 +186,8 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
   }
 
   const hasWon = (board: Board): boolean => {
-    return board.some(row => row.some(cell => cell >= WINNING_TILE))
+    const config = GAME_CONFIGS[gameMode]
+    return board.some(row => row.some(cell => cell >= config.winningTile))
   }
 
   const move = useCallback((direction: Direction) => {
@@ -279,7 +295,7 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
         ← 뒤로가기
       </button>
       
-      <h2>2048</h2>
+      <h2>{GAME_CONFIGS[gameMode].name}</h2>
       
       <div className="game-header">
         <div className="score-container">
@@ -297,12 +313,29 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
       {!isPlaying ? (
         <div className="game-start">
           <div className="game-description">
-            <p><strong>2048을 만들어보세요!</strong></p>
+            <p><strong>{GAME_CONFIGS[gameMode].winningTile}을 만들어보세요!</strong></p>
             <p>• 방향키나 WASD로 타일을 움직입니다</p>
             <p>• 같은 숫자끼리 합쳐집니다</p>
-            <p>• 2048 타일을 만들면 승리!</p>
+            <p>• {GAME_CONFIGS[gameMode].winningTile} 타일을 만들면 승리!</p>
           </div>
-          <button className="start-button" onClick={startGame}>
+          
+          <div className="mode-selection">
+            <h3>게임 모드 선택</h3>
+            <div className="mode-buttons">
+              {Object.entries(GAME_CONFIGS).map(([mode, config]) => (
+                <button 
+                  key={mode}
+                  className={`mode-button ${gameMode === mode ? 'active' : ''}`}
+                  onClick={() => setGameMode(mode as GameMode)}
+                >
+                  {config.name}<br/>
+                  <small>{config.boardSize}x{config.boardSize}</small>
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <button className="start-button" onClick={() => startGame()}>
             게임 시작
           </button>
         </div>
@@ -313,7 +346,7 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
               <div className="game-end-message">
                 {gameWon ? (
                   <div className="win-message">
-                    🎉 축하합니다!<br/>2048을 만들었습니다!
+                    🎉 축하합니다!<br/>{GAME_CONFIGS[gameMode].winningTile}을 만들었습니다!
                   </div>
                 ) : (
                   <div className="lose-message">
@@ -321,7 +354,7 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
                   </div>
                 )}
                 <div className="end-buttons">
-                  <button className="continue-button" onClick={startGame}>
+                  <button className="continue-button" onClick={() => startGame()}>
                     새 게임
                   </button>
                   <button className="menu-button" onClick={resetGame}>
@@ -332,7 +365,15 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
             </div>
           )}
 
-          <div className="game-board-2048">
+          <div 
+            className="game-board-2048" 
+            style={{
+              gridTemplateColumns: `repeat(${GAME_CONFIGS[gameMode].boardSize}, 1fr)`,
+              gridTemplateRows: `repeat(${GAME_CONFIGS[gameMode].boardSize}, 1fr)`,
+              width: `${Math.min(320, 280 + GAME_CONFIGS[gameMode].boardSize * 10)}px`,
+              height: `${Math.min(320, 280 + GAME_CONFIGS[gameMode].boardSize * 10)}px`
+            }}
+          >
             {board.map((row, rowIndex) =>
               row.map((cell, colIndex) => (
                 <div
@@ -341,7 +382,7 @@ function TwoFortyEight({ onBack }: TwoFortyEightProps) {
                   style={{
                     backgroundColor: cell ? getTileColor(cell) : '#cdc1b4',
                     color: getTileTextColor(cell),
-                    fontSize: cell >= 1000 ? '1.5rem' : cell >= 100 ? '1.8rem' : '2rem'
+                    fontSize: cell >= 10000 ? '0.8rem' : cell >= 1000 ? '1rem' : cell >= 100 ? '1.3rem' : '1.5rem'
                   }}
                 >
                   {cell || ''}
