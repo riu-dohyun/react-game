@@ -32,7 +32,7 @@ function MemoryCard({ onBack }: MemoryCardProps) {
   const [gameStarted, setGameStarted] = useState<boolean>(false)
 
   useEffect(() => {
-    let interval: NodeJS.Timeout
+    let interval: ReturnType<typeof setInterval>
     if (isGameStarted && !gameWon) {
       interval = setInterval(() => {
         setTimer(prev => prev + 1)

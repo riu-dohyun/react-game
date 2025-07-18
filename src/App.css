@@ -9,6 +9,24 @@
   padding: 1rem;
 }
 
+.App.fullscreen-game {
+  padding: 0;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.App.fullscreen-game .game-container {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  margin: 0;
+  padding: 1rem;
+  background: transparent;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .game-menu {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
@@ -42,6 +60,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 1.2rem;
   width: 100%;
+  max-width: 600px;
 }
 
 .game-buttons button {
@@ -117,6 +136,27 @@
 }
 .game-buttons button:nth-child(5):hover {
   background: linear-gradient(135deg, #ffcc02, #e67e22);
+}
+
+.game-buttons button:nth-child(6) {
+  background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+}
+.game-buttons button:nth-child(6):hover {
+  background: linear-gradient(135deg, #b19cd9, #5a4fcf);
+}
+
+.game-buttons button:nth-child(7) {
+  background: linear-gradient(135deg, #fd79a8, #e84393);
+}
+.game-buttons button:nth-child(7):hover {
+  background: linear-gradient(135deg, #fd6c98, #d63384);
+}
+
+.game-buttons button:nth-child(8) {
+  background: linear-gradient(135deg, #fdcb6e, #e17055);
+}
+.game-buttons button:nth-child(8):hover {
+  background: linear-gradient(135deg, #f39c12, #d35400);
 }
 
 .back-button {

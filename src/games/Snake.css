@@ -1,41 +1,90 @@
-.game-container h2 {
-  margin: 0;
-  font-size: 2.5rem;
-  background: linear-gradient(45deg, #fff, #f0f0f0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  text-align: center;
-}
-
-.game-info {
+.snake-fullscreen {
+  width: 100%;
+  height: 100vh;
   display: flex;
-  gap: 3rem;
-  margin: 1.5rem 0;
-  justify-content: center;
+  flex-direction: column;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  position: relative;
 }
 
-.score,
-.speed {
+.snake-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.snake-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.game-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #4caf50;
-  text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+  text-align: center;
 }
 
-.game-over {
+.stat-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.2rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4caf50;
+  text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.snake-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 1rem;
+}
+
+.game-over-overlay,
+.game-start-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.game-over-message {
   background: linear-gradient(45deg, #ff6b6b, #ee5a24);
   color: white;
-  padding: 1.5rem;
-  border-radius: 15px;
+  padding: 2rem;
+  border-radius: 20px;
   text-align: center;
   font-weight: bold;
-  font-size: 1.2rem;
-  margin: 1rem 0;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
   box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -43,78 +92,117 @@
 .start-message {
   background: rgba(255, 255, 255, 0.1);
   color: white;
-  padding: 1.5rem;
-  border-radius: 15px;
+  padding: 2rem;
+  border-radius: 20px;
   text-align: center;
-  margin: 1rem 0;
-  backdrop-filter: blur(10px);
+  margin-bottom: 2rem;
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   line-height: 1.6;
+  max-width: 500px;
+}
+
+.start-message h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.8rem;
+}
+
+.start-message p {
+  margin: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.game-board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
 }
 
 .game-board {
   display: grid;
-  grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: repeat(20, 1fr);
+  grid-template-columns: repeat(24, 1fr);
+  grid-template-rows: repeat(24, 1fr);
   gap: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
   padding: 10px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  height: 400px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  width: min(80vh, 80vw);
+  height: min(80vh, 80vw);
+  max-width: 600px;
+  max-height: 600px;
 }
 
 .cell {
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
+  border-radius: 1px;
   transition: all 0.1s ease;
 }
 
 .snake-head {
   background: linear-gradient(135deg, #4caf50, #2e7d32);
-  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
-  border-radius: 4px;
-  animation: pulse 1s infinite;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.8);
+  border-radius: 3px;
+  animation: pulse 1.5s ease-in-out infinite;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  0%, 100% { 
+    box-shadow: 0 0 4px rgba(76, 175, 80, 0.8);
+  }
+  50% { 
+    box-shadow: 0 0 8px rgba(76, 175, 80, 1);
+  }
 }
 
 .snake-body {
   background: linear-gradient(135deg, #66bb6a, #388e3c);
-  border-radius: 3px;
-  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+  border-radius: 2px;
+  box-shadow: 0 0 2px rgba(76, 175, 80, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .food {
   background: linear-gradient(135deg, #ff6b6b, #ee5a24);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+  box-shadow: 0 0 6px rgba(255, 107, 107, 0.8);
   animation: foodGlow 2s ease-in-out infinite alternate;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  position: relative;
+}
+
+.food::after {
+  content: '🍎';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60%;
 }
 
 @keyframes foodGlow {
-  0% { box-shadow: 0 0 5px rgba(255, 107, 107, 0.3); }
-  100% { box-shadow: 0 0 15px rgba(255, 107, 107, 0.8); }
+  0% { 
+    box-shadow: 0 0 4px rgba(255, 107, 107, 0.6);
+    transform: scale(1);
+  }
+  100% { 
+    box-shadow: 0 0 8px rgba(255, 107, 107, 1);
+    transform: scale(1.05);
+  }
 }
 
 .game-controls {
-  margin-top: 2rem;
   text-align: center;
+  padding: 1rem;
 }
 
 .start-button {
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
   background: linear-gradient(45deg, #4caf50, #2e7d32);
   border: none;
@@ -122,12 +210,12 @@
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .start-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
   background: linear-gradient(45deg, #66bb6a, #388e3c);
 }
 
@@ -135,10 +223,97 @@
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
   font-weight: 500;
-  animation: blink 2s infinite;
+  margin-bottom: 1rem;
+  animation: pulse-hint 2s infinite;
 }
 
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0.5; }
+@keyframes pulse-hint {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+.mobile-controls {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.mobile-row {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.mobile-btn {
+  width: 60px;
+  height: 60px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-btn:active {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+  transform: scale(0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 뒤로가기 버튼 스타일 수정 */
+.snake-fullscreen .back-button {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .mobile-controls {
+    display: flex;
+  }
+  
+  .control-hint {
+    font-size: 1rem;
+  }
+  
+  .game-stats {
+    gap: 1rem;
+  }
+  
+  .stat-value {
+    font-size: 1.2rem;
+  }
+  
+  .snake-header {
+    padding: 0.8rem 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .snake-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .game-board {
+    width: min(90vw, 90vh);
+    height: min(90vw, 90vh);
+    max-width: 400px;
+    max-height: 400px;
+  }
 }
